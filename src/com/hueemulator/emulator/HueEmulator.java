@@ -5,10 +5,15 @@ import com.hueemulator.gui.View;
 public class HueEmulator{
    
     public static void main(String args[]) {
-        new HueEmulator(args.length > 0 ? args[0] : null);
+        if(args.length > 0) {
+            boolean autoStart = false;
+            if (args.length > 1)
+                autoStart = Boolean.parseBoolean(args[1]);
+            new HueEmulator(args[0], autoStart);
+        } else new HueEmulator(null, false);
     }
     
-    public HueEmulator(String fileName) {
+    public HueEmulator(String fileName, boolean autoStart) {
         Model model = new Model();
         
         //  Set Up the View (A JFrame, MenuBar and Console).
@@ -26,7 +31,12 @@ public class HueEmulator{
         controller.addPropertiesListeners();        
         
         //  Model is needed here to paint Light Bulbs/ Show bulb information.
-        view.getGraphicsPanel().setModel(model);   
+        view.getGraphicsPanel().setModel(model);
+
+
+        if(autoStart) {
+            view.getMenuBar().getStartButton().doClick();
+        }
     }        
     
 }
